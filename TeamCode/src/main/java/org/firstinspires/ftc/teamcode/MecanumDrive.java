@@ -2,7 +2,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 //import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 /**
@@ -25,6 +27,8 @@ public class MecanumDrive extends OpMode {
     private DcMotor front_right = null;
     private DcMotor back_left   = null;
     private DcMotor back_right  = null;
+    private CRServo grabServo;
+
 
     static final double     SLOW_SPEED             = 0.2;
     static final double     NORMAL_SPEED             = 0.3;
@@ -39,6 +43,8 @@ public class MecanumDrive extends OpMode {
         front_right  = hardwareMap.get(DcMotor.class, "front_right");
         back_left    = hardwareMap.get(DcMotor.class, "back_left");
         back_right   = hardwareMap.get(DcMotor.class, "back_right");
+        grabServo = hardwareMap.crservo.get("grabServo");
+
 
         front_left.setDirection(DcMotor.Direction.FORWARD);
         front_right.setDirection(DcMotor.Direction.REVERSE);
@@ -64,6 +70,15 @@ public class MecanumDrive extends OpMode {
         } else if (gamepad1.right_bumper) {
              speedMultiplier = FAST_SPEED;
             //fast
+        }
+        if (gamepad1.a) {
+            grabServo.setPower(1);
+        }
+        if (gamepad1.b) {
+            grabServo.setPower(-1);
+        }
+        if (gamepad1.atRest())  {
+            grabServo.setPower(0);
         }
 
         /*
