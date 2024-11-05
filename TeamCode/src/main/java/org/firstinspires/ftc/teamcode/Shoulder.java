@@ -47,12 +47,12 @@ public class Shoulder {
 
     public void moveShoulderPosition(double gamepad){
 
-        ShoulderPos = ShoulderPos + (int)(-gamepad * 50);
+        ShoulderPos = ShoulderDrive.getCurrentPosition() + (int)(-gamepad * 100);
         moveShoulder();
     }
 
-    public int getShoulderPos(){
-        return ShoulderPos;
+    public int getCurrentPosition(){
+        return ShoulderDrive.getCurrentPosition();
     }
 
     private void moveShoulder(){

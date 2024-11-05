@@ -9,18 +9,18 @@ public class SpeciminWheel {
 
     public SpeciminWheel(HardwareMap hardwareMap) {
         this.hardwareMap = hardwareMap;
-        SpeciminWheelServo = hardwareMap.crservo.get("grabservo");
+        SpeciminWheelServo = hardwareMap.crservo.get("SpeciminWheel");
     }
 
-    public void CollectSpecimin() {
+    public void collectSpecimin() {
         SpeciminWheelServo.setPower(1);
     }
 
-    public void ReleaseSpecimin() {
+    public void releaseSpecimin() {
         SpeciminWheelServo.setPower(-1);
     }
 
-    public void HoldSpecimin() {
+    public void holdSpecimin() {
         SpeciminWheelServo.setPower(0);
     }
 

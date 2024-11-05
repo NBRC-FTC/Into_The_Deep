@@ -7,7 +7,7 @@ public class Extension {
     DcMotor ExtensionDrive;
     int extensionPos;
     HardwareMap hardwareMap;
-    static final int     EXTENSION_MAX             = 2000;
+    static final int     EXTENSION_MAX             = 1775;
     static final int     EXTENSION_MIN             = 0;
     static final double     EXTENSION_POWER          =0.45;
     public Extension(HardwareMap hardwareMap){
@@ -53,12 +53,11 @@ public class Extension {
 
     public void moveExtensionPosition(double gamepad){
 
-        extensionPos = extensionPos + (int)(-gamepad * 10);
+        extensionPos = ExtensionDrive.getCurrentPosition() + (int)(-gamepad * 25);
         moveExtension();
     }
 
-    public int getExtensionPos(){
-        return extensionPos;
+    public int getCurrentPosition(){return ExtensionDrive.getCurrentPosition();
     }
 
     private void moveExtension(){

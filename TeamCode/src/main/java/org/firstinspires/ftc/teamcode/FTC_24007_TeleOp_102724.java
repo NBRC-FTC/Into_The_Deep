@@ -65,7 +65,9 @@ public class FTC_24007_TeleOp_102724 extends LinearOpMode {
         telemetry.update();
 
         Shoulder shoulder = new Shoulder(hardwareMap);
+        SpeciminWheel speciminWheel = new SpeciminWheel(hardwareMap);
         Extension extension = new Extension(hardwareMap);
+        Mecanum mecanum = new Mecanum(hardwareMap);
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
@@ -85,24 +87,6 @@ public class FTC_24007_TeleOp_102724 extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            // Setup a variable for each drive wheel to save power level for telemetry
-          //  double leftPower;
-            //double rightPower;
-
-            // Choose to drive using either Tank Mode, or POV Mode
-            // Comment out the method that's not used.  The default below is POV.
-
-            // POV Mode uses left stick to go forward, and right stick to turn.
-            // - This uses basic math to combine motions and is easier to drive straight.
-           // double drive = -gamepad1.left_stick_y;
-            //double turn  =  gamepad1.right_stick_x;
-           // leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
-            //rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
-
-            // Tank Mode uses one stick to control each wheel.
-            // - This requires no math, but it is hard to drive forward slowly and keep straight.
-            // leftPower  = -gamepad1.left_stick_y ;
-            // rightPower = -gamepad1.right_stick_y ;
             shoulder.moveShoulderPosition(gamepad2.right_stick_y);
             extension.moveExtensionPosition(gamepad2.left_stick_y);
             if (gamepad2.a){
@@ -116,14 +100,25 @@ public class FTC_24007_TeleOp_102724 extends LinearOpMode {
             if (gamepad2.y){
                 shoulder.scoreHighPosition();
             }
-            // Send calculated power to wheels
-          //  leftDrive.setPower(leftPower);
-          //  rightDrive.setPower(rightPower);
+
+            if (gamepad2.right_bumper){
+                speciminWheel.releaseSpecimin();
+            } else if (gamepad2.left_bumper) {
+                speciminWheel.collectSpecimin();
+            }
+            else {speciminWheel.holdSpecimin();}
+
+            //double drive  = gamepad1.left_stick_y;
+            //double strafe = -gamepad1.left_stick_x;
+            //double twist  = -gamepad1.right_stick_x;
+            //double speedMultiplier = NORMAL_SPEED;
+
+            mecanum.driveMecanum( gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, 0.3 );
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            telemetry.addData("Positions", "Shoulder Position: " + shoulder.getShoulderPos());
-            telemetry.addData("Positions", "Extend Position: " + extension.getExtensionPos());
+            telemetry.addData("Positions", "Shoulder Position: " + shoulder.getCurrentPosition());
+            telemetry.addData("Positions", "Extend Position: " + extension.getCurrentPosition());
 
           //  telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.update();
