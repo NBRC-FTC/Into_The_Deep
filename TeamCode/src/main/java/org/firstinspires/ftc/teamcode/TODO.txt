@@ -1,0 +1,6 @@
+Fix mecanum drive speeds 
+Fix extention motor 
+Make code for the wrist 
+Fix sholder mottor speed 
+auto code 
+If possible make sholder when going up more stabble
