@@ -11,9 +11,15 @@ public class Mecanum {
     private DcMotor back_left   = null;
     private DcMotor back_right  = null;
 
-    static final double     SLOW_SPEED             = 0.2;
-    static final double     NORMAL_SPEED             = 0.3;
-    static final double     FAST_SPEED             = 0.5;
+    static final double     SLOW_SPEED             = 0.35;
+    static final double     NORMAL_SPEED             = 0.6;
+    static final double     FAST_SPEED             = 0.8;
+
+    public enum SPEED{
+        SLOW,
+        NORMAL,
+        FAST
+    }
 
     public Mecanum(HardwareMap hardwareMap){
 
@@ -33,7 +39,19 @@ public class Mecanum {
         ;
     }
 
-    public void driveMecanum(double drive,double strafe,double twist, double speedMultiplier ) {
+    public void driveMecanum(double drive,double strafe,double twist, SPEED speed) {
+        double speedMultiplier;
+
+        switch(speed) {
+            case SLOW:
+                speedMultiplier = SLOW_SPEED;
+                break;
+            case  FAST:
+                speedMultiplier = FAST_SPEED;
+                break;
+            default:
+                speedMultiplier = NORMAL_SPEED;
+        }
 
         // You may need to multiply some of these by -1 to invert direction of
         // the motor.  This is not an issue with the calculations themselves.

@@ -32,7 +32,7 @@ public class MecanumDrive extends OpMode {
 
     static final double     SLOW_SPEED             = 0.2;
     static final double     NORMAL_SPEED             = 0.3;
-    static final double     FAST_SPEED             = 0.5;
+    static final double     FAST_SPEED             = 0.4;
 
     @Override
     public void init() {

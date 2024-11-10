@@ -68,17 +68,9 @@ public class FTC_24007_TeleOp_102724 extends LinearOpMode {
         SpeciminWheel speciminWheel = new SpeciminWheel(hardwareMap);
         Extension extension = new Extension(hardwareMap);
         Mecanum mecanum = new Mecanum(hardwareMap);
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
-       // leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
-        //rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+        Wrist wrist = new Wrist(hardwareMap);
 
-        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-        // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
-        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-       // leftDrive.setDirection(DcMotor.Direction.REVERSE);
-       // rightDrive.setDirection(DcMotor.Direction.FORWARD);
+        Mecanum.SPEED speed;
 
         // Wait for the game to start (driver presses START)
         waitForStart();
@@ -108,17 +100,30 @@ public class FTC_24007_TeleOp_102724 extends LinearOpMode {
             }
             else {speciminWheel.holdSpecimin();}
 
-            //double drive  = gamepad1.left_stick_y;
-            //double strafe = -gamepad1.left_stick_x;
-            //double twist  = -gamepad1.right_stick_x;
-            //double speedMultiplier = NORMAL_SPEED;
+            if (gamepad1.right_bumper){
+                speed = Mecanum.SPEED.FAST;
+            } else if (gamepad1.left_bumper) {
+                speed = Mecanum.SPEED.SLOW;
+            }
+            else {
+                speed = Mecanum.SPEED.NORMAL;
+            }
 
-            mecanum.driveMecanum( gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, 0.3 );
+            mecanum.driveMecanum( gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, speed );
+
+            if (gamepad2.dpad_up){
+                wrist.moveUp();
+            } else if (gamepad2.dpad_down) {
+                wrist.moveDown();
+            } else if (gamepad2.dpad_left) {
+                wrist.moveToPickUpPosition();
+            }
 
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Positions", "Shoulder Position: " + shoulder.getCurrentPosition());
             telemetry.addData("Positions", "Extend Position: " + extension.getCurrentPosition());
+            telemetry.addData("Positions","Wrist Position: " + wrist.getCurrentPosition());
 
           //  telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.update();

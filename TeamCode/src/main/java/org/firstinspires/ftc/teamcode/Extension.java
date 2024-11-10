@@ -9,7 +9,9 @@ public class Extension {
     HardwareMap hardwareMap;
     static final int     EXTENSION_MAX             = 1775;
     static final int     EXTENSION_MIN             = 0;
-    static final double     EXTENSION_POWER          =0.45;
+    static final double     EXTENSION_POWER          =0.85;
+    static final int     EXTENSION_MOVE          =90;
+
     public Extension(HardwareMap hardwareMap){
 
         this.hardwareMap = hardwareMap;
@@ -53,7 +55,7 @@ public class Extension {
 
     public void moveExtensionPosition(double gamepad){
 
-        extensionPos = ExtensionDrive.getCurrentPosition() + (int)(-gamepad * 25);
+        extensionPos = ExtensionDrive.getCurrentPosition() + (int)(-gamepad * EXTENSION_MOVE );
         moveExtension();
     }
 
