@@ -29,13 +29,9 @@
 
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
-
 
 /*
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -51,13 +47,11 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="TeleOpMode")
-//@Disabled
+
 public class FTC_24007_TeleOp_102724 extends LinearOpMode {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
-    private DcMotor leftDrive = null;
-    private DcMotor rightDrive = null;
 
     @Override
     public void runOpMode() {
@@ -80,6 +74,7 @@ public class FTC_24007_TeleOp_102724 extends LinearOpMode {
         while (opModeIsActive()) {
 
             shoulder.moveShoulderPosition(gamepad2.right_stick_y);
+
             extension.moveExtensionPosition(gamepad2.left_stick_y);
             if (gamepad2.a){
                 shoulder.drivePosition();
@@ -124,8 +119,8 @@ public class FTC_24007_TeleOp_102724 extends LinearOpMode {
             telemetry.addData("Positions", "Shoulder Position: " + shoulder.getCurrentPosition());
             telemetry.addData("Positions", "Extend Position: " + extension.getCurrentPosition());
             telemetry.addData("Positions","Wrist Position: " + wrist.getCurrentPosition());
+            telemetry.addData("Game Controller", "Right stick y:" + gamepad2.right_stick_y);
 
-          //  telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
             telemetry.update();
         }
     }

@@ -10,7 +10,7 @@ public class Shoulder {
 
     static final int     SHOULDER_MAX             = 6000;
     static final int     SHOULDER_MIN             = 0;
-    static final double     SHOULDER_POWER          =0.85;
+    static final double   SHOULDER_POWER          =0.85;
     static final int     SHOULDER_MOVE          =200;
 
     public Shoulder(HardwareMap hardwareMap){
@@ -46,9 +46,10 @@ public class Shoulder {
         moveShoulder();
     }
 
-    public void moveShoulderPosition(double gamepad){
+    public void moveShoulderPosition(float gamepad){
 
         ShoulderPos = ShoulderDrive.getCurrentPosition() + (int)(-gamepad * SHOULDER_MOVE);
+        //ShoulderPos = ShoulderPos + (int)(-gamepad * SHOULDER_MOVE);
         moveShoulder();
     }
 

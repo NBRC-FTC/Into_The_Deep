@@ -53,9 +53,10 @@ public class Extension {
         moveExtension();
     }
 
-    public void moveExtensionPosition(double gamepad){
+    public void moveExtensionPosition(float gamepad){
 
         extensionPos = ExtensionDrive.getCurrentPosition() + (int)(-gamepad * EXTENSION_MOVE );
+        //    extensionPos = extensionPos + (int)(-gamepad * EXTENSION_MOVE );
         moveExtension();
     }
 
