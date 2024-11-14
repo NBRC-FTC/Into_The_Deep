@@ -11,9 +11,9 @@ public class Mecanum {
     private DcMotor back_left   = null;
     private DcMotor back_right  = null;
 
-    static final double     SLOW_SPEED             = 0.35;
+    static final double     SLOW_SPEED             = 0.1;
     static final double     NORMAL_SPEED             = 0.6;
-    static final double     FAST_SPEED             = 0.8;
+    static final double     FAST_SPEED             = 1;
 
     public enum SPEED{
         SLOW,

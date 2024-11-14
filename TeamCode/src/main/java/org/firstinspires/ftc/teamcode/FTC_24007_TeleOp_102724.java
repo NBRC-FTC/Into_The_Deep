@@ -80,12 +80,29 @@ public class FTC_24007_TeleOp_102724 extends LinearOpMode {
                 shoulder.drivePosition();
             }
 
+            if (gamepad2.x){
+                shoulder.pickupPosition();
+                if (shoulder.getCurrentPosition()>525) {
+                    extension.pickupPosition();
+                    wrist.moveToPickUpPosition();
+                }
+            }
+
+
             if (gamepad2.b){
                 shoulder.scoreLowPosition();
+                if (shoulder.getCurrentPosition()>525){
+                    extension.scoreLowPosition();
+                    wrist.moveToPickUpPosition();
+                }
             }
 
             if (gamepad2.y){
                 shoulder.scoreHighPosition();
+                if (shoulder.getCurrentPosition()>525) {
+                    extension.scoreHighPosition();
+                    wrist.scoreHighPosition();
+                }
             }
 
             if (gamepad2.right_bumper){

@@ -10,7 +10,7 @@ public class Wrist {
     Servo wristServo;
 
     static final double     WRIST_MAX    = 0.75;
-    static final double     WRIST_MIN    = 0.0;
+    static final double     WRIST_MIN  = 0.0;
     static final double     WRIST_PICKUP    = 0.2;
     static final double     WRIST_CHANGE    = 0.005;
 
@@ -21,6 +21,10 @@ public class Wrist {
 
     public void moveToMin(){
         wristServo.setPosition(WRIST_MIN);
+    }
+
+    public void scoreHighPosition(){
+        wristServo.setPosition(WRIST_PICKUP);
     }
 
     public void moveToMax(){

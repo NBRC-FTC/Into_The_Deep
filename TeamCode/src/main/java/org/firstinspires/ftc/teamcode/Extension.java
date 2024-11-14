@@ -9,8 +9,12 @@ public class Extension {
     HardwareMap hardwareMap;
     static final int     EXTENSION_MAX             = 1775;
     static final int     EXTENSION_MIN             = 0;
-    static final double     EXTENSION_POWER          =0.85;
-    static final int     EXTENSION_MOVE          =90;
+    static final double     EXTENSION_POWER          =0.60;
+    static final int     EXTENSION_MOVE          =6;
+    static final int     EXTENSION_SCORE_LOW          =750;
+    static final int     EXTENSION_SCORE_HIGH             = 1775;
+    static final int     EXTENSION_PICKUP_POS        =1250;
+
 
     public Extension(HardwareMap hardwareMap){
 
@@ -30,20 +34,11 @@ public class Extension {
         moveExtension();
     }
 
-    public void extendPosition(){
-        extensionPos = 180;
+    public void pickupPosition(){
+        extensionPos = EXTENSION_PICKUP_POS ;
         moveExtension();
     }
 
-    public void scoreLowPosition(){
-        extensionPos = 180;
-        moveExtension();
-    }
-
-    public void scoreHighPosition(){
-        extensionPos = 180;
-        moveExtension();
-    }
     public void moveExtensionOut(){
         extensionPos = extensionPos + 10;
         moveExtension();
@@ -55,8 +50,18 @@ public class Extension {
 
     public void moveExtensionPosition(float gamepad){
 
-        extensionPos = ExtensionDrive.getCurrentPosition() + (int)(-gamepad * EXTENSION_MOVE );
-        //    extensionPos = extensionPos + (int)(-gamepad * EXTENSION_MOVE );
+        //extensionPos = ExtensionDrive.getCurrentPosition() + (int)(-gamepad * EXTENSION_MOVE );
+         extensionPos = extensionPos + (int)(-gamepad * EXTENSION_MOVE );
+        moveExtension();
+    }
+
+    public void scoreLowPosition(){
+        extensionPos =  EXTENSION_SCORE_LOW ;
+        moveExtension();
+    }
+
+    public void scoreHighPosition(){
+        extensionPos = EXTENSION_SCORE_HIGH ;
         moveExtension();
     }
 
