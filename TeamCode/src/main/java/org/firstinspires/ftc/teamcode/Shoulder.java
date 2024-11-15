@@ -8,7 +8,7 @@ public class Shoulder {
     int ShoulderPos;
     HardwareMap hardwareMap;
 
-    static final int     SHOULDER_MAX             = 6000;
+    static final int     SHOULDER_MAX             = 3850; //old value 6000;
     static final int     SHOULDER_MIN             = 0;
     static final double   SHOULDER_POWER          =0.85;
     static final int     SHOULDER_MOVE          = 10;
