@@ -15,7 +15,6 @@ public class Extension {
     static final int     EXTENSION_SCORE_HIGH             = 1775;
     static final int     EXTENSION_PICKUP_POS        =1250;
 
-
     public Extension(HardwareMap hardwareMap){
 
         this.hardwareMap = hardwareMap;

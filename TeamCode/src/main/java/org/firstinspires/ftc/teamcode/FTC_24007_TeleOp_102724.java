@@ -76,6 +76,7 @@ public class FTC_24007_TeleOp_102724 extends LinearOpMode {
             shoulder.moveShoulderPosition(gamepad2.right_stick_y);
 
             extension.moveExtensionPosition(gamepad2.left_stick_y);
+
             if (gamepad2.a){
                 shoulder.drivePosition();
             }
@@ -121,7 +122,7 @@ public class FTC_24007_TeleOp_102724 extends LinearOpMode {
                 speed = Mecanum.SPEED.NORMAL;
             }
 
-            mecanum.driveMecanum( gamepad1.left_stick_y, -gamepad1.left_stick_x, -gamepad1.right_stick_x, speed );
+            mecanum.driveMecanum( -gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x, speed );
 
             if (gamepad2.dpad_up){
                 wrist.moveUp();
@@ -136,7 +137,11 @@ public class FTC_24007_TeleOp_102724 extends LinearOpMode {
             telemetry.addData("Positions", "Shoulder Position: " + shoulder.getCurrentPosition());
             telemetry.addData("Positions", "Extend Position: " + extension.getCurrentPosition());
             telemetry.addData("Positions","Wrist Position: " + wrist.getCurrentPosition());
-            telemetry.addData("Game Controller", "Right stick y:" + gamepad2.right_stick_y);
+            telemetry.addData("Game Pad 1", "Left stick y:" + gamepad1.left_stick_y);
+            telemetry.addData("Game Pad 1", "Left stick x:" + gamepad1.left_stick_x);
+            telemetry.addData("Game Pad 1", "Right stick x:" + gamepad1.right_stick_x);
+            telemetry.addData("Game Pad 2", "Right stick y:" + gamepad2.right_stick_y);
+
 
             telemetry.update();
         }

@@ -31,7 +31,6 @@ public class MecanumDrive extends OpMode {
     private DcMotor back_right  = null;
     private CRServo grabServo;
 
-
     static final double     SLOW_SPEED             = 0.2;
     static final double     NORMAL_SPEED             = 0.3;
     static final double     FAST_SPEED             = 0.4;
@@ -108,9 +107,9 @@ public class MecanumDrive extends OpMode {
         // the motor.  This is not an issue with the calculations themselves.
         double[] speeds = {
                 (drive + strafe + twist) * speedMultiplier,
-                (drive - strafe - twist)* speedMultiplier,
-                (drive - strafe + twist)* speedMultiplier,
-                (drive + strafe - twist)* speedMultiplier
+                (drive - strafe - twist) * speedMultiplier,
+                (drive - strafe + twist) * speedMultiplier,
+                (drive + strafe - twist) * speedMultiplier
         };
 
         // Because we are adding vectors and motors only take values between
@@ -131,7 +130,7 @@ public class MecanumDrive extends OpMode {
 
         // apply the calculated values to the motors.
         front_left.setPower(speeds[0]);
-       front_right.setPower(speeds[1]);
+        front_right.setPower(speeds[1]);
         back_left.setPower(speeds[2]);
         back_right.setPower(speeds[3]);
     }
