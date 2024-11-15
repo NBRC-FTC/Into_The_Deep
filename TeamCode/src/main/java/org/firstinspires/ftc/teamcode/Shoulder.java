@@ -13,7 +13,7 @@ public class Shoulder {
     static final double   SHOULDER_POWER          =0.85;
     static final int     SHOULDER_MOVE          = 10;
     static final int     SHOULDER_DRIVE_POS        = 900;
-    static final int     SHOULDER_PICKUP_POS        =700;
+    static final int     SHOULDER_PICKUP_POS        =550;
 
     public Shoulder(HardwareMap hardwareMap){
 

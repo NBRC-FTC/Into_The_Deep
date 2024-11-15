@@ -13,8 +13,8 @@ public class Extension {
     static final int EXTENSION_MOVE = 6;
     static final int EXTENSION_SCORE_LOW = 750;
     static final int EXTENSION_SCORE_HIGH = 1775;
-    static final int EXTENSION_PICKUP_POS = 1250;
-    static final int EXTENSION_FOURTY = 1400;
+    static final int EXTENSION_PICKUP_POS = 750;
+    static final int EXTENSION_FORTY = 1400;
 
     public enum LIMIT {
         FULL,
@@ -109,8 +109,8 @@ public class Extension {
                 extensionPos = extensionPos;
                 break;
             case FORTY:
-                if (extensionPos > EXTENSION_FOURTY) {
-                    extensionPos = EXTENSION_FOURTY;
+                if (extensionPos > EXTENSION_FORTY) {
+                    extensionPos = EXTENSION_FORTY;
                 }
                 break;
         }

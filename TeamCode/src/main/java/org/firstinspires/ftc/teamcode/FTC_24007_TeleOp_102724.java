@@ -73,9 +73,9 @@ public class FTC_24007_TeleOp_102724 extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            if (shoulder.getCurrentPosition()<525){
+            if (shoulder.getCurrentPosition()<300 && extension.getCurrentPosition() < 200){
                 extension.setLimit(Extension.LIMIT.FULL);
-            } else if (shoulder.getCurrentPosition()<2000){
+            } else if (shoulder.getCurrentPosition()<2500){
                 extension.setLimit((Extension.LIMIT.FORTY));
             } else {
                 extension.setLimit((Extension.LIMIT.NONE));
@@ -91,8 +91,8 @@ public class FTC_24007_TeleOp_102724 extends LinearOpMode {
 
             if (gamepad2.x){
                 shoulder.pickupPosition();
+                extension.pickupPosition();
                 if (shoulder.getCurrentPosition()>525) {
-                    extension.pickupPosition();
                     wrist.moveToPickUpPosition();
                 }
             }
@@ -100,16 +100,16 @@ public class FTC_24007_TeleOp_102724 extends LinearOpMode {
 
             if (gamepad2.b){
                 shoulder.scoreLowPosition();
+                extension.scoreLowPosition();
                 if (shoulder.getCurrentPosition()>525){
-                    extension.scoreLowPosition();
                     wrist.moveToPickUpPosition();
                 }
             }
 
             if (gamepad2.y){
                 shoulder.scoreHighPosition();
+                extension.scoreHighPosition();
                 if (shoulder.getCurrentPosition()>525) {
-                    extension.scoreHighPosition();
                     wrist.scoreHighPosition();
                 }
             }
