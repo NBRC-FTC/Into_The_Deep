@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -18,16 +19,23 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
     public void runOpMode() {
         telemetry.setAutoClear(true);
         OtosDrive otosDrive = new OtosDrive(hardwareMap);
+        otosDrive.configureOtos();
+        telemetry.addData("Configured OTOS", startPosition);
+        telemetry.update();
 
         //Key Pay inputs to selecting Starting Position of robot
         selectStartingPosition();
         telemetry.addData("Selected Starting Position", startPosition);
+        telemetry.update();
 
         while (opModeInInit()) {
             telemetry.addData("Selected Starting Position", startPosition);
+            // Display current robot position/heading
+            telemetry.addData("Current X coordinate", otosDrive.myPosition().x);
+            telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
+            telemetry.addData("Current Heading angle", otosDrive.myPosition().h);
             telemetry.update();
         }
-
 
         // Wait for the game to start (driver presses PLAY)
 
@@ -35,16 +43,25 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
 
         switch (startPosition) {
             case FAR_PARK:
-                otosDrive.moveRight(3,.5);
+                SparkFunOTOS.Pose2D currentPosition = new SparkFunOTOS.Pose2D(.0, 0, 0); // should be -3.75 & -7.5 and 90
+                //otosDrive.setPosition(currentPosition);
+                telemetry.addData("Current X coordinate", otosDrive.myPosition().x);
+                telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
+                telemetry.addData("Current Heading angle", otosDrive.myPosition().h);
+                telemetry.update();
+                sleep(5000);
+                otosDrive.otosDrive(10,10,90,10);
+                telemetry.addData("Current X coordinate", otosDrive.myPosition().x);
+                telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
+                telemetry.addData("Current Heading angle", otosDrive.myPosition().h);
+                telemetry.update();
                 sleep(500);
-                otosDrive.moveForward(-48,.5);
                 break;
 
             case NEAR_PARK:
 
-                otosDrive.moveRight(3,.5);
+                otosDrive.otosDrive(10,10,90,10);
                 sleep(500);
-                otosDrive.moveForward(-36,.5);
                 break;
 
         }

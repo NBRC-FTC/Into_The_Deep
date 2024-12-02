@@ -115,9 +115,9 @@ public class FTC_24007_TeleOp_102724 extends LinearOpMode {
             }
 
             if (gamepad2.right_bumper){
-                speciminWheel.releaseSpecimin();
-            } else if (gamepad2.left_bumper) {
                 speciminWheel.collectSpecimin();
+            } else if (gamepad2.left_bumper) {
+                speciminWheel.releaseSpecimin();
             }
             else {speciminWheel.holdSpecimin();}
 

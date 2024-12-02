@@ -203,4 +203,53 @@ public class Mecanum {
         rightRearMotor.setPower(0);
 
     }
+    public void turnLeft(int howMuch, double speed) {
+        // howMuch is in inches. A negative howMuch moves backward.
+
+        // fetch motor positions
+        lfPos = leftFrontMotor.getCurrentPosition();
+        rfPos = rightFrontMotor.getCurrentPosition();
+        lrPos = leftRearMotor.getCurrentPosition();
+        rrPos = rightRearMotor.getCurrentPosition();
+
+        // calculate new targets
+        lfPos += -howMuch * CLICKS_PER_INCH;
+        rfPos += howMuch * CLICKS_PER_INCH;
+        lrPos += -howMuch * CLICKS_PER_INCH;
+        rrPos += howMuch * CLICKS_PER_INCH;
+
+        // move robot to new position
+        leftFrontMotor.setTargetPosition(lfPos);
+        rightFrontMotor.setTargetPosition(rfPos);
+        leftRearMotor.setTargetPosition(lrPos);
+        rightRearMotor.setTargetPosition(rrPos);
+
+        leftFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightRearMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        leftFrontMotor.setPower(speed);
+        rightFrontMotor.setPower(speed);
+        leftRearMotor.setPower(speed);
+        rightRearMotor.setPower(speed);
+
+        // wait for move to complete
+        while (leftFrontMotor.isBusy() && rightFrontMotor.isBusy() &&
+                leftRearMotor.isBusy() && rightRearMotor.isBusy()) {
+
+            // Display it for the driver.
+            //telemetry.addLine("Move Foward");
+            //telemetry.addData("Target", "%7d :%7d", lfPos, rfPos, lrPos, rrPos);
+            //telemetry.addData("Actual", "%7d :%7d", leftFrontMotor.getCurrentPosition(),
+            //    rightFrontMotor.getCurrentPosition(), leftRearMotor.getCurrentPosition(),
+            //      rightRearMotor.getCurrentPosition());
+            //telemetry.update();
+        }
+        // Stop all motion;
+        leftFrontMotor.setPower(0);
+        rightFrontMotor.setPower(0);
+        leftRearMotor.setPower(0);
+        rightRearMotor.setPower(0);
+    }
 }
