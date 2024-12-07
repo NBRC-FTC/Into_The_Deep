@@ -1,14 +1,54 @@
-package org.firstinspires.ftc.teamcode;
+/* Copyright (c) 2021 FIRST. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted (subject to the limitations in the disclaimer below) provided that
+ * the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this list
+ * of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of FIRST nor the names of its contributors may be used to endorse or
+ * promote products derived from this software without specific prior written permission.
+ *
+ * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
+ * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
-import com.qualcomm.robotcore.util.Range;
-import com.qualcomm.robotcore.util.ElapsedTime;
+package org.firstinspires.ftc.teamcode.testcode;
+/* this is an autonomous program for red. Start centered on tile F2 along wall.
+    It uses the SparkFun OTOS sensor to control driving.
+    It drives forward to push a sample into the net zone,
+    then moves to tile E2, then backs up to E6 before parking in the 
+    red observation zone. 
+*/
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 
-public class OtosDrive {
+import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.robotcore.util.ElapsedTime;
+
+@Autonomous(name="ITD_demo2_MR", group="Test Code")
+//@Disabled
+public class ITD_Demo2_MR extends LinearOpMode {
     //  Set the GAIN constants to control the relationship between the measured position error, and how much power is
     //  applied to the drive motors to correct the error.
     //  Drive = Error * Gain    Make these values smaller for smoother control, or larger for a more aggressive response.
@@ -16,69 +56,104 @@ public class OtosDrive {
     final double STRAFE_GAIN =  0.15;   // 0.015 Strafe Speed Control "Gain".  eg: Ramp up to 25% power at a 25 degree Yaw error.   (0.25 / 25.0)
     final double TURN_GAIN   =  0.03;   // 0.01 Turn Control "Gain".  eg: Ramp up to 25% power at a 25 degree error. (0.25 / 25.0)
 
-    final double MAX_AUTO_SPEED = 0.4;   //  Clip the approach speed to this max value (adjust for your robot)
-    final double MAX_AUTO_STRAFE= 0.4;   //  Clip the approach speed to this max value (adjust for your robot)
-    final double MAX_AUTO_TURN  = 0.4;   //  Clip the turn speed to this max value (adjust for your robot)
-
-    HardwareMap hardwareMap;
-
-    private DcMotor leftFrontMotor = null;
-    private DcMotor rightFrontMotor = null;
-    private DcMotor leftRearMotor = null;
-    private DcMotor rightRearMotor = null;
-
-    static final double SLOW_SPEED = 0.1;
-    static final double NORMAL_SPEED = 0.6;
-    static final double FAST_SPEED = 1;
-    static final double CLICKS_PER_INCH = 87.5;
-    static final double CLICKS_PER_DEGRE = 21.94;
-
-    private int lfPos;
-    private int rfPos;
-    private int lrPos;
-    private int rrPos;
-
-    public enum SPEED {
-        SLOW,
-        NORMAL,
-        FAST
-    }
+    final double MAX_AUTO_SPEED = 0.5;   //  Clip the approach speed to this max value (adjust for your robot)
+    final double MAX_AUTO_STRAFE= 0.5;   //  Clip the approach speed to this max value (adjust for your robot)
+    final double MAX_AUTO_TURN  = 0.5;   //  Clip the turn speed to this max value (adjust for your robot)
 
     private ElapsedTime runtime = new ElapsedTime();
+
+    // Declare OpMode members for each of the 4 drive motors.
+    private DcMotor leftFrontDrive = null;
+    private DcMotor leftBackDrive = null;
+    private DcMotor rightFrontDrive = null;
+    private DcMotor rightBackDrive = null;
+
     // Sensors
     private SparkFunOTOS myOtos;        // Optical tracking odometry sensor
     SparkFunOTOS.Pose2D pos;
 
-    public OtosDrive(HardwareMap hardwareMap) {
+    @Override
+    public void runOpMode() {
 
-        this.hardwareMap = hardwareMap;
-        leftFrontMotor = hardwareMap.get(DcMotor.class, "front_left");
-        rightFrontMotor = hardwareMap.get(DcMotor.class, "front_right");
-        leftRearMotor = hardwareMap.get(DcMotor.class, "back_left");
-        rightRearMotor = hardwareMap.get(DcMotor.class, "back_right");
+        // Initialize the hardware variables. Note that the strings used here must correspond
+        // to the names assigned during the robot configuration step on the DS or RC devices.
+        leftFrontDrive  = hardwareMap.get(DcMotor.class, "front_left");
+        leftBackDrive  = hardwareMap.get(DcMotor.class, "back_left");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "front_right");
+        rightBackDrive = hardwareMap.get(DcMotor.class, "back_right");
 
-        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightFrontMotor.setDirection(DcMotor.Direction.FORWARD);
-        leftRearMotor.setDirection(DcMotor.Direction.REVERSE);
-        rightRearMotor.setDirection(DcMotor.Direction.FORWARD);
+        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
 
-        // Set the drive motor run modes:
-        leftFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        leftRearMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightRearMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightBackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        // Mecanum drive is controlled with three axes: drive (front-and-back),
-        // strafe (left-and-right), and twist (rotating the whole chassis).
-        ;
         // Get a reference to the sensor
         myOtos = hardwareMap.get(SparkFunOTOS.class, "SparkFunOTOS");
-    }
-    public void configureOtos() {
+        // All the configuration for the OTOS is done in this helper method, check it out!
+        configureOtos();
+        sleep(1000);
+
+        while(!isStarted()) {
+            // Wait for the game to start (driver presses PLAY)
+            telemetry.addData("Status", "Initialized");
+
+            SparkFunOTOS.Pose2D currentPos = myPosition();
+            telemetry.addData("current X coordinate", currentPos.x);
+            telemetry.addData("current Y coordinate", currentPos.y);
+            telemetry.addData("current Heading angle", currentPos.h);
+
+            telemetry.update();
+        }
+        waitForStart();
+        runtime.reset();
+
+        telemetry.addData("Status", "Running");
+        telemetry.update();
+
+/*
+        moveRobot(0,.5,0);
+        sleep(1000);
+        moveRobot(0,-.5,0);
+        sleep(1000);
+        moveRobot(.5,0,0);
+        sleep(1000);
+        moveRobot(-.5,0,0);
+        sleep(1000);
+        moveRobot(0,0,.5);
+        sleep(1000);
+        moveRobot(0,0,-.5);
+        sleep(1000);
+        */
         /*
+        // This works
+        otosDrive(20,0,0,100);
+        sleep(5000);
+        otosDrive(10,10,-45,100);
+        sleep(5000);
+        otosDrive(20,0,0,100);
+        sleep(5000);
+        */
+        double distance = 100;
+        distance = adjustDistance(distance);
+
+        otosDrive(adjustDistance(0),100, 0,15);
+        sleep(10000);
+       // otosDrive(adjustDistance(0),-distance,0,15);
+        //sleep(10000);
+    }
+
+    private void configureOtos() {
         telemetry.addLine("Configuring OTOS...");
         telemetry.update();
-         */
 
         // Set the desired units for linear and angular measurements. Can be either
         // meters or inches for linear, and radians or degrees for angular. If not
@@ -120,8 +195,8 @@ public class OtosDrive {
         // multiple speeds to get an average, then set the linear scalar to the
         // inverse of the error. For example, if you move the robot 100 inches and
         // the sensor reports 103 inches, set the linear scalar to 100/103 = 0.971
-        myOtos.setLinearScalar(1.008);
-        myOtos.setAngularScalar(0.992);
+        myOtos.setLinearScalar(1.00); //1.008
+        myOtos.setAngularScalar(1.00);//.992
 
         // The IMU on the OTOS includes a gyroscope and accelerometer, which could
         // have an offset. Note that as of firmware version 1.0, the calibration
@@ -150,22 +225,24 @@ public class OtosDrive {
         SparkFunOTOS.Version hwVersion = new SparkFunOTOS.Version();
         SparkFunOTOS.Version fwVersion = new SparkFunOTOS.Version();
         myOtos.getVersionInfo(hwVersion, fwVersion);
-/*
+
         telemetry.addLine("OTOS configured! Press start to get position data!");
         telemetry.addLine();
         telemetry.addLine(String.format("OTOS Hardware Version: v%d.%d", hwVersion.major, hwVersion.minor));
         telemetry.addLine(String.format("OTOS Firmware Version: v%d.%d", fwVersion.major, fwVersion.minor));
         telemetry.update();
- */
     }
-    void setPosition(double targetX, double targetY, double targetHeading ) {
 
+    public double adjustDistance(double realDistance){
+        double adjustDistance = realDistance * .7372634;
+        return adjustDistance;
     }
+
     /**
      * Move robot to a designated X,Y position and heading
      * set the maxTime to have the driving logic timeout after a number of seconds.
      */
-    public void otosDrive(double targetX, double targetY, double targetHeading, int maxTime) {
+    void otosDrive(double targetX, double targetY, double targetHeading, int maxTime) {
         double drive, strafe, turn;
         double currentRange, targetRange, initialBearing, targetBearing, xError, yError, yawError;
         double opp, adj;
@@ -177,14 +254,23 @@ public class OtosDrive {
 
         runtime.reset();
 
-        //while(opModeIsActive() && (runtime.milliseconds() < maxTime*1000) &&
-        while(  (runtime.milliseconds() < maxTime*1000) &&
-                ((Math.abs(xError) > 1.5) || (Math.abs(yError) > 1.5) || (Math.abs(yawError) > 4)) ) {
+        while(opModeIsActive() && (runtime.milliseconds() < maxTime*1000) &&
+                ((Math.abs(xError) > 1) || (Math.abs(yError) > 1) || (Math.abs(yawError) > 4)) ) { // Error tollerences
+
+            //Why?
+            double currentYawRadians = currentPos.h*3.1415/180;
+            double rotX = xError * Math.cos(currentYawRadians) - yError * Math.sin(currentYawRadians);
+            double rotY = xError * Math.sin(currentYawRadians) + yError * Math.cos(currentYawRadians);
+
             // Use the speed and turn "gains" to calculate how we want the robot to move.
-            drive  = Range.clip(xError * SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED);
-            strafe = Range.clip(yError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
+            //drive  = Range.clip(yError * SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED); - Works
+            //strafe = Range.clip(xError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
+            drive  = Range.clip(rotY * SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED);
+            strafe = Range.clip(rotX * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
+            //drive  = Range.clip(xError * SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED);
+            //strafe = Range.clip(yError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
             turn   = Range.clip(yawError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN) ;
-/*
+
             telemetry.addData("Auto","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
             // current x,y swapped due to 90 degree rotation
             telemetry.addData("current X coordinate", currentPos.x);
@@ -197,7 +283,7 @@ public class OtosDrive {
             telemetry.addData("yError", yError);
             telemetry.addData("yawError", yawError);
             telemetry.update();
-*/
+
             // Apply desired axes motions to the drivetrain.
             moveRobot(drive, strafe, turn);
 
@@ -209,20 +295,25 @@ public class OtosDrive {
         }
         moveRobot(0,0,0);
         currentPos = myPosition();
-        /*
-        telemetry.addData("current X c oordinate", currentPos.x);
+        telemetry.addData("current X coordinate", currentPos.x);
         telemetry.addData("current Y coordinate", currentPos.y);
         telemetry.addData("current Heading angle", currentPos.h);
         telemetry.update();
-         */
     }
 
     /* the reported OTOS values are based on sensor orientation, convert to robot centric
         by swapping x and y and changing the sign of the heading
         */
-    public SparkFunOTOS.Pose2D myPosition() {
+    /*
+    SparkFunOTOS.Pose2D myPosition() {
         pos = myOtos.getPosition();
         SparkFunOTOS.Pose2D myPos = new SparkFunOTOS.Pose2D(pos.y, pos.x, -pos.h);
+        return(myPos);
+    }
+    */
+    SparkFunOTOS.Pose2D myPosition() {
+        pos = myOtos.getPosition();
+        SparkFunOTOS.Pose2D myPos = new SparkFunOTOS.Pose2D(pos.x, pos.y, -pos.h);
         return(myPos);
     }
 
@@ -253,10 +344,10 @@ public class OtosDrive {
         }
 
         // Send powers to the wheels.
-        leftFrontMotor.setPower(leftFrontPower);
-        rightFrontMotor.setPower(rightFrontPower);
-        leftRearMotor.setPower(leftBackPower);
-        rightRearMotor.setPower(rightBackPower);
-        //sleep(10);
+        leftFrontDrive.setPower(leftFrontPower);
+        rightFrontDrive.setPower(rightFrontPower);
+        leftBackDrive.setPower(leftBackPower);
+        rightBackDrive.setPower(rightBackPower);
+        sleep(10);
     }
 }

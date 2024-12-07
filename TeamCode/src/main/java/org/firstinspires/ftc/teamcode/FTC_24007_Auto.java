@@ -3,6 +3,12 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.subsystems.Extension;
+import org.firstinspires.ftc.teamcode.subsystems.Mecanum;
+import org.firstinspires.ftc.teamcode.subsystems.Shoulder;
+import org.firstinspires.ftc.teamcode.subsystems.SpeciminWheel;
+import org.firstinspires.ftc.teamcode.subsystems.Wrist;
+
 @Autonomous(name="AutoMode",preselectTeleOp = "TeleOpMode")  // @TeleOp(...) is the other common choice
 // @Disabled
 public class FTC_24007_Auto extends LinearOpMode {
