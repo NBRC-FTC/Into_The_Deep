@@ -7,11 +7,12 @@ public class Shoulder {
     DcMotor ShoulderDrive;
     int ShoulderPos;
     HardwareMap hardwareMap;
+    boolean ignoreMinClass = false;
 
     static final int     SHOULDER_MAX             = 3850; //old value 6000;
     static final int     SHOULDER_MIN             = 0;
-    static final double   SHOULDER_POWER          =0.85;
-    static final int     SHOULDER_MOVE          = 10;
+    static final double   SHOULDER_POWER          =0.85;   //was 0.85 before
+    static final int     SHOULDER_MOVE          = 12;
     static final int     SHOULDER_DRIVE_POS        = 900;
     static final int     SHOULDER_PICKUP_POS        =550;
 
@@ -20,7 +21,9 @@ public class Shoulder {
         this.hardwareMap = hardwareMap;
         ShoulderDrive = hardwareMap.get(DcMotor.class,"Shoulder");
 
-        ShoulderDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //ShoulderDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        ShoulderDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         ShoulderPos = 0;
         ShoulderDrive.setDirection(DcMotor.Direction.REVERSE);
     }
@@ -59,11 +62,18 @@ public class Shoulder {
         return ShoulderDrive.getCurrentPosition();
     }
 
+    public void zeroEncoder() {
+        ShoulderDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+    }
+    public void setIgnoreMin(boolean ignoreMin) {
+        ignoreMinClass = ignoreMin;
+    }
     private void moveShoulder(){
         if (ShoulderPos > SHOULDER_MAX) {
             ShoulderPos = SHOULDER_MAX;
         }
-        if (ShoulderPos < SHOULDER_MIN) {
+        if (ShoulderPos < SHOULDER_MIN && !ignoreMinClass) {
             ShoulderPos = SHOULDER_MIN;
         }
         ShoulderDrive.setTargetPosition(ShoulderPos);

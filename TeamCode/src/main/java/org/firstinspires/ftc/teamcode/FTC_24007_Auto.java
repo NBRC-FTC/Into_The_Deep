@@ -30,7 +30,7 @@ public class FTC_24007_Auto extends LinearOpMode {
         SpeciminWheel speciminWheel = new SpeciminWheel(hardwareMap);
         Extension extension = new Extension(hardwareMap);
         Wrist wrist = new Wrist(hardwareMap);
-
+        shoulder.zeroEncoder();
         //Key Pay inputs to selecting Starting Position of robot
         selectStartingPosition();
         telemetry.addData("Selected Starting Position", startPosition);
@@ -69,9 +69,9 @@ public class FTC_24007_Auto extends LinearOpMode {
                 extension.scoreHighPosition();
                 sleep(1000);
                 wrist.scoreHighPosition();
-                mecanum.turnLeft(10,.5);
-                mecanum.moveRight(2,0.5);
-                mecanum.moveForward(25,.5);
+                mecanum.turnLeft(12,.25);
+                mecanum.moveRight(14,0.25);
+                mecanum.moveForward(26,.25);
                 sleep(500);
                 speciminWheel.releaseSpecimin();
                 sleep(1000);
@@ -82,7 +82,11 @@ public class FTC_24007_Auto extends LinearOpMode {
                 extension.startPosition();
                 sleep(1000);
                 shoulder.startPosition();
-
+                mecanum.moveForward(-16,.5);
+                mecanum.moveRight(-14,0.5);
+                mecanum.turnLeft(-12,.5);
+                mecanum.moveForward(-69,1);
+                mecanum.moveRight(-23,.75);
                 break;
 
 

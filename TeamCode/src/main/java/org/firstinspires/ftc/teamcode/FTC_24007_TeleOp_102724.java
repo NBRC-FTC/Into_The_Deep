@@ -69,7 +69,8 @@ public class FTC_24007_TeleOp_102724 extends LinearOpMode {
         Extension extension = new Extension(hardwareMap);
         Mecanum mecanum = new Mecanum(hardwareMap);
         Wrist wrist = new Wrist(hardwareMap);
-
+        shoulder.zeroEncoder();
+        extension.zeroEncoder();
         Mecanum.SPEED speed;
 
         // Wait for the game to start (driver presses START)
@@ -145,7 +146,18 @@ public class FTC_24007_TeleOp_102724 extends LinearOpMode {
             } else if (gamepad2.dpad_left) {
                 wrist.moveToPickUpPosition();
             }
-
+            if (gamepad2.guide) {
+                extension.setLimit(Extension.LIMIT.NONE);
+                shoulder.setIgnoreMin(true);
+                extension.setIgnoreMin(true);
+            } else {
+                shoulder.setIgnoreMin(false);
+                extension.setIgnoreMin(false);
+            }
+            if (gamepad2.start) {
+                shoulder.zeroEncoder();
+                extension.zeroEncoder();
+            }
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
             telemetry.addData("Positions", "Shoulder Position: " + shoulder.getCurrentPosition());
