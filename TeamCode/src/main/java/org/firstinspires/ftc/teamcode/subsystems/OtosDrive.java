@@ -67,12 +67,19 @@ public class OtosDrive {
         rightFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftRearMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightRearMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
         // Mecanum drive is controlled with three axes: drive (front-and-back),
         // strafe (left-and-right), and twist (rotating the whole chassis).
         ;
         // Get a reference to the sensor
         myOtos = hardwareMap.get(SparkFunOTOS.class, "SparkFunOTOS");
+
+
     }
     public void configureOtos() {
         /*
@@ -232,7 +239,7 @@ public class OtosDrive {
      * Positive strafe right
      * Positive turn is clockwise: note this is not how the IMU reports yaw(heading)
      */
-    void moveRobot(double drive, double strafe, double turn) {
+    public void moveRobot(double drive, double strafe, double turn) {
 
         // Calculate wheel powers.
         double leftFrontPower    =  drive +strafe +turn;
