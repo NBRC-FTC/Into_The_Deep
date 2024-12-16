@@ -255,7 +255,7 @@ public class ITD_Demo2_MR extends LinearOpMode {
         runtime.reset();
 
         while(opModeIsActive() && (runtime.milliseconds() < maxTime*1000) &&
-                ((Math.abs(xError) > 0) || (Math.abs(yError) > 0) || (Math.abs(yawError) > 4)) ) { // Error tollerences
+                ((Math.abs(xError) > .5) || (Math.abs(yError) > .5) || (Math.abs(yawError) > 2)) ) { // Error tollerences
 
             //Why?
             double currentYawRadians = currentPos.h*3.1415/180;

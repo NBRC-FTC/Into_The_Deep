@@ -78,9 +78,9 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
                 telemetry.update();
                 sleep(5000);
 
-                otosDrive.otosDrive(0,23,0, 10);
+                otosDrive.otosDrive(23,0,0, 10);
                 sleep(500);
-                otosDrive.otosDrive(5,23,-45, 10);
+                otosDrive.otosDrive(23,5,-45, 10);
                 telemetry.addLine("Ari cooked");
                 sleep(5000);
             break;
