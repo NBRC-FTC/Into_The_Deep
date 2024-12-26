@@ -4,7 +4,11 @@ import com.qualcomm.hardware.sparkfun.SparkFunOTOS;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.teamcode.subsystems.Extension;
 import org.firstinspires.ftc.teamcode.subsystems.OtosDrive;
+import org.firstinspires.ftc.teamcode.subsystems.Shoulder;
+import org.firstinspires.ftc.teamcode.subsystems.SpeciminWheel;
+import org.firstinspires.ftc.teamcode.subsystems.Wrist;
 
 @Autonomous(name="AutoMode_Otos",preselectTeleOp = "TeleOpMode")  // @TeleOp(...) is the other common choice
 // @Disabled
@@ -23,6 +27,12 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
         telemetry.setAutoClear(true);
         OtosDrive otosDrive = new OtosDrive(hardwareMap);
         otosDrive.configureOtos();
+
+        Shoulder shoulder = new Shoulder(hardwareMap);
+        SpeciminWheel speciminWheel = new SpeciminWheel(hardwareMap);
+        Extension extension = new Extension(hardwareMap);
+        Wrist wrist = new Wrist(hardwareMap);
+
         telemetry.addData("Configured OTOS", startPosition);
         telemetry.update();
 
@@ -72,18 +82,46 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
 
             case NEAR_SCORE:
 
-                telemetry.addData("Current X coordinate", otosDrive.myPosition().x);
-                telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
-                telemetry.addData("Current Heading angle", otosDrive.myPosition().h);
-                telemetry.update();
-                sleep(5000);
-
-                otosDrive.otosDrive(23,0,0, 10);
-                sleep(500);
+                displayPosition(otosDrive);
                 otosDrive.otosDrive(23,5,-45, 10);
-                telemetry.addLine("Ari cooked");
-                sleep(5000);
-            break;
+                sleep(500);
+                shoulder.scoreHighPosition();
+                sleep(1000);
+                extension.setLimit((Extension.LIMIT.NONE));
+                extension.scoreHighPosition();
+                sleep(1000);
+                wrist.scoreHighPosition();
+                otosDrive.otosDrive((23-17.678), (5+17.678),-45,10);
+                speciminWheel.releaseSpecimin();
+                sleep(1000);
+                speciminWheel.holdSpecimin();
+                displayPosition(otosDrive);
+                otosDrive.otosDrive(23,5,-45, 10);
+                extension.moveExtensionTo(750);
+                sleep(1500);
+                shoulder.drivePosition();
+                otosDrive.otosDrive(39.5,4,0, 10);
+                displayPosition(otosDrive);
+                shoulder.moveShoulderTo(410);
+                speciminWheel.collectSpecimin();
+                otosDrive.otosDrive(39.5,8,0, 10);
+                speciminWheel.holdSpecimin();
+                shoulder.drivePosition();
+                otosDrive.otosDrive(23,6,0,10);
+                otosDrive.otosDrive(23,5,-45, 10);
+                shoulder.scoreHighPosition();
+                sleep(1000);
+                extension.setLimit((Extension.LIMIT.NONE));
+                extension.scoreHighPosition();
+                sleep(1000);
+                wrist.scoreHighPosition();
+                otosDrive.otosDrive((23-17.678), (5+17.678),-45,10);
+                speciminWheel.releaseSpecimin();
+                sleep(1500);
+                speciminWheel.holdSpecimin();
+                otosDrive.otosDrive(23,5,-45, 10);
+                sleep(7500);
+                break;
 
         }
         telemetry.addData("Path", "Complete");
@@ -120,5 +158,11 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
             telemetry.update();
         }
         telemetry.clearAll();
+    }
+    public void displayPosition(OtosDrive otosDrive) {
+        telemetry.addData("Current X coordinate", otosDrive.myPosition().x);
+        telemetry.addData("Current Y coordinate", otosDrive.myPosition().y);
+        telemetry.addData("Current Heading angle", otosDrive.myPosition().h);
+        telemetry.update();
     }
 }

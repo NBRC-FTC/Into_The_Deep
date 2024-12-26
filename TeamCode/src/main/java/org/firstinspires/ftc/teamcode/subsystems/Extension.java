@@ -75,7 +75,10 @@ public class Extension {
         extensionPos = EXTENSION_SCORE_HIGH;
         moveExtension();
     }
-
+    public void moveExtensionTo(int position) {
+        extensionPos = position;
+        moveExtension();
+    }
     public int getCurrentPosition() {
         return ExtensionDrive.getCurrentPosition();
     }

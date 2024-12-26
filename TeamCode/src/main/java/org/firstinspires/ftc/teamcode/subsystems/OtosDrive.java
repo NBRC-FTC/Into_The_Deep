@@ -185,9 +185,16 @@ public class OtosDrive {
         //while(opModeIsActive() && (runtime.milliseconds() < maxTime*1000) &&
         while(  (runtime.milliseconds() < maxTime*1000) &&
                 ((Math.abs(xError) > .5) || (Math.abs(yError) > .5) || (Math.abs(yawError) > 2)) ) {
+            double currentYawRadians = currentPos.h*3.1415/180;
+            double rotX = xError * Math.cos(currentYawRadians) - yError * Math.sin(currentYawRadians);
+            double rotY = xError * Math.sin(currentYawRadians) + yError * Math.cos(currentYawRadians);
+
             // Use the speed and turn "gains" to calculate how we want the robot to move.
-            drive  = Range.clip(yError * SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED);
-            strafe = Range.clip(xError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
+//            drive  = Range.clip(yError * SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED);
+//            strafe = Range.clip(xError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
+//            turn   = Range.clip(yawError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN) ;
+            drive  = Range.clip(rotY * SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED);
+            strafe = Range.clip(rotX * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
             turn   = Range.clip(yawError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN) ;
 /*
             telemetry.addData("Auto","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
@@ -227,7 +234,7 @@ public class OtosDrive {
         */
     public SparkFunOTOS.Pose2D myPosition() {
         pos = myOtos.getPosition();
-        SparkFunOTOS.Pose2D myPos = new SparkFunOTOS.Pose2D(pos.y, pos.x, pos.h);
+        SparkFunOTOS.Pose2D myPos = new SparkFunOTOS.Pose2D(pos.x, pos.y, -pos.h);
         return(myPos);
     }
 
