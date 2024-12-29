@@ -15,7 +15,6 @@ public class Shoulder {
     static final int     SHOULDER_MOVE          = 12;
     static final int     SHOULDER_DRIVE_POS        = 900;
     static final int     SHOULDER_PICKUP_POS        =550;
-
     public Shoulder(HardwareMap hardwareMap){
 
         this.hardwareMap = hardwareMap;
@@ -57,7 +56,10 @@ public class Shoulder {
         ShoulderPos = ShoulderPos + (int)(-gamepad * SHOULDER_MOVE);
         moveShoulder();
     }
-
+    public void moveShoulderTo(int position) {
+        ShoulderPos = position;
+        moveShoulder();
+    }
     public int getCurrentPosition(){
         return ShoulderDrive.getCurrentPosition();
     }

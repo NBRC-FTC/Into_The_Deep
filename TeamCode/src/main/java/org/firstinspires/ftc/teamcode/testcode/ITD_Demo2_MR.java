@@ -195,7 +195,7 @@ public class ITD_Demo2_MR extends LinearOpMode {
         // multiple speeds to get an average, then set the linear scalar to the
         // inverse of the error. For example, if you move the robot 100 inches and
         // the sensor reports 103 inches, set the linear scalar to 100/103 = 0.971
-        myOtos.setLinearScalar(1.00); //1.008
+        myOtos.setLinearScalar(0.99); //1.008
         myOtos.setAngularScalar(1.00);//.992
 
         // The IMU on the OTOS includes a gyroscope and accelerometer, which could
@@ -255,7 +255,7 @@ public class ITD_Demo2_MR extends LinearOpMode {
         runtime.reset();
 
         while(opModeIsActive() && (runtime.milliseconds() < maxTime*1000) &&
-                ((Math.abs(xError) > 1) || (Math.abs(yError) > 1) || (Math.abs(yawError) > 4)) ) { // Error tollerences
+                ((Math.abs(xError) > .5) || (Math.abs(yError) > .5) || (Math.abs(yawError) > 2)) ) { // Error tollerences
 
             //Why?
             double currentYawRadians = currentPos.h*3.1415/180;

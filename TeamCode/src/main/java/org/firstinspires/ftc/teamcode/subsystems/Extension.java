@@ -7,12 +7,10 @@ public class Extension {
     DcMotor ExtensionDrive;
     int extensionPos;
     HardwareMap hardwareMap;
-    boolean ignoreMinClass = false;
-
     static final int EXTENSION_MAX = 1775;
     static final int EXTENSION_MIN = 0;
-    static final double EXTENSION_POWER = 0.6;  //0.6 before
-    static final int EXTENSION_MOVE = 12;
+    static final double EXTENSION_POWER = 0.60;
+    static final int EXTENSION_MOVE = 6;
     static final int EXTENSION_SCORE_LOW = 750;
     static final int EXTENSION_SCORE_HIGH = 1775;
     static final int EXTENSION_PICKUP_POS = 750;
@@ -31,10 +29,7 @@ public class Extension {
         this.hardwareMap = hardwareMap;
         ExtensionDrive = hardwareMap.get(DcMotor.class, "Extension");
 
-        //ExtensionDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        ExtensionDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-
+        ExtensionDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         extensionPos = 0;
         ExtensionDrive.setDirection(DcMotor.Direction.REVERSE);
     }
@@ -80,12 +75,9 @@ public class Extension {
         extensionPos = EXTENSION_SCORE_HIGH;
         moveExtension();
     }
-    public void zeroEncoder() {
-        ExtensionDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-    }
-    public void setIgnoreMin(boolean ignoreMin) {
-        ignoreMinClass = ignoreMin;
+    public void moveExtensionTo(int position) {
+        extensionPos = position;
+        moveExtension();
     }
     public int getCurrentPosition() {
         return ExtensionDrive.getCurrentPosition();
@@ -129,7 +121,7 @@ public class Extension {
         if (extensionPos > EXTENSION_MAX) {
             extensionPos = EXTENSION_MAX;
         }
-        if (extensionPos < EXTENSION_MIN && !ignoreMinClass) {
+        if (extensionPos < EXTENSION_MIN) {
             extensionPos = EXTENSION_MIN;
         }
         ExtensionDrive.setTargetPosition(extensionPos);

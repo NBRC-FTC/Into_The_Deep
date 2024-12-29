@@ -67,12 +67,17 @@ public class OtosDrive {
         rightFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftRearMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightRearMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightRearMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         // Mecanum drive is controlled with three axes: drive (front-and-back),
         // strafe (left-and-right), and twist (rotating the whole chassis).
-        ;
+
         // Get a reference to the sensor
         myOtos = hardwareMap.get(SparkFunOTOS.class, "SparkFunOTOS");
+
     }
     public void configureOtos() {
         /*
@@ -179,10 +184,17 @@ public class OtosDrive {
 
         //while(opModeIsActive() && (runtime.milliseconds() < maxTime*1000) &&
         while(  (runtime.milliseconds() < maxTime*1000) &&
-                ((Math.abs(xError) > 1.5) || (Math.abs(yError) > 1.5) || (Math.abs(yawError) > 4)) ) {
+                ((Math.abs(xError) > .5) || (Math.abs(yError) > .5) || (Math.abs(yawError) > 2)) ) {
+            double currentYawRadians = currentPos.h*3.1415/180;
+            double rotX = xError * Math.cos(currentYawRadians) - yError * Math.sin(currentYawRadians);
+            double rotY = xError * Math.sin(currentYawRadians) + yError * Math.cos(currentYawRadians);
+
             // Use the speed and turn "gains" to calculate how we want the robot to move.
-            drive  = Range.clip(xError * SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED);
-            strafe = Range.clip(yError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
+//            drive  = Range.clip(yError * SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED);
+//            strafe = Range.clip(xError * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
+//            turn   = Range.clip(yawError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN) ;
+            drive  = Range.clip(rotY * SPEED_GAIN, -MAX_AUTO_SPEED, MAX_AUTO_SPEED);
+            strafe = Range.clip(rotX * STRAFE_GAIN, -MAX_AUTO_STRAFE, MAX_AUTO_STRAFE);
             turn   = Range.clip(yawError * TURN_GAIN, -MAX_AUTO_TURN, MAX_AUTO_TURN) ;
 /*
             telemetry.addData("Auto","Drive %5.2f, Strafe %5.2f, Turn %5.2f ", drive, strafe, turn);
@@ -222,7 +234,7 @@ public class OtosDrive {
         */
     public SparkFunOTOS.Pose2D myPosition() {
         pos = myOtos.getPosition();
-        SparkFunOTOS.Pose2D myPos = new SparkFunOTOS.Pose2D(pos.y, pos.x, -pos.h);
+        SparkFunOTOS.Pose2D myPos = new SparkFunOTOS.Pose2D(pos.x, pos.y, -pos.h);
         return(myPos);
     }
 
@@ -232,7 +244,7 @@ public class OtosDrive {
      * Positive strafe right
      * Positive turn is clockwise: note this is not how the IMU reports yaw(heading)
      */
-    void moveRobot(double drive, double strafe, double turn) {
+    public void moveRobot(double drive, double strafe, double turn) {
 
         // Calculate wheel powers.
         double leftFrontPower    =  drive +strafe +turn;
