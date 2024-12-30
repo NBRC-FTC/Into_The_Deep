@@ -16,9 +16,9 @@ public class OtosDrive {
     final double STRAFE_GAIN =  0.15;   // 0.015 Strafe Speed Control "Gain".  eg: Ramp up to 25% power at a 25 degree Yaw error.   (0.25 / 25.0)
     final double TURN_GAIN   =  0.03;   // 0.01 Turn Control "Gain".  eg: Ramp up to 25% power at a 25 degree error. (0.25 / 25.0)
 
-    final double MAX_AUTO_SPEED = 0.4;   //  Clip the approach speed to this max value (adjust for your robot)
-    final double MAX_AUTO_STRAFE= 0.4;   //  Clip the approach speed to this max value (adjust for your robot)
-    final double MAX_AUTO_TURN  = 0.4;   //  Clip the turn speed to this max value (adjust for your robot)
+    final double MAX_AUTO_SPEED = 1;   //  Clip the approach speed to this max value (adjust for your robot)
+    final double MAX_AUTO_STRAFE= 1;   //  Clip the approach speed to this max value (adjust for your robot)
+    final double MAX_AUTO_TURN  = 1;   //  Clip the turn speed to this max value (adjust for your robot)
 
     HardwareMap hardwareMap;
 
@@ -184,7 +184,7 @@ public class OtosDrive {
 
         //while(opModeIsActive() && (runtime.milliseconds() < maxTime*1000) &&
         while(  (runtime.milliseconds() < maxTime*1000) &&
-                ((Math.abs(xError) > .5) || (Math.abs(yError) > .5) || (Math.abs(yawError) > 2)) ) {
+                ((Math.abs(xError) > 1) || (Math.abs(yError) > 1) || (Math.abs(yawError) > 2)) ) {
             double currentYawRadians = currentPos.h*3.1415/180;
             double rotX = xError * Math.cos(currentYawRadians) - yError * Math.sin(currentYawRadians);
             double rotY = xError * Math.sin(currentYawRadians) + yError * Math.cos(currentYawRadians);

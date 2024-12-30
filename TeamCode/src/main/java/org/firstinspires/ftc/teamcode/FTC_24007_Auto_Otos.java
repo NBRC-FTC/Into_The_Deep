@@ -81,46 +81,48 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
                 break;
 
             case NEAR_SCORE:
-
+                //29-->23, 11-->5
                 displayPosition(otosDrive);
                 otosDrive.otosDrive(23,5,-45, 10);
-                sleep(500);
                 shoulder.scoreHighPosition();
-                sleep(1000);
+                sleep(500);
                 extension.setLimit((Extension.LIMIT.NONE));
                 extension.scoreHighPosition();
-                sleep(1000);
                 wrist.scoreHighPosition();
-                otosDrive.otosDrive((23-17.678), (5+17.678),-45,10);
+                otosDrive.otosDrive(10, 25,-45,10); //9,26
                 speciminWheel.releaseSpecimin();
-                sleep(1000);
+                sleep(500);
                 speciminWheel.holdSpecimin();
                 displayPosition(otosDrive);
                 otosDrive.otosDrive(23,5,-45, 10);
-                extension.moveExtensionTo(750);
-                sleep(1500);
+                extension.moveExtensionTo(700);
                 shoulder.drivePosition();
                 otosDrive.otosDrive(39.5,4,0, 10);
                 displayPosition(otosDrive);
-                shoulder.moveShoulderTo(410);
+                shoulder.moveShoulderTo(375);
                 speciminWheel.collectSpecimin();
-                otosDrive.otosDrive(39.5,8,0, 10);
+                otosDrive.otosDrive(39.5,9,0, 3);
                 speciminWheel.holdSpecimin();
                 shoulder.drivePosition();
-                otosDrive.otosDrive(23,6,0,10);
+//                otosDrive.otosDrive(23,6,0,10);
                 otosDrive.otosDrive(23,5,-45, 10);
                 shoulder.scoreHighPosition();
-                sleep(1000);
+                sleep(500);
                 extension.setLimit((Extension.LIMIT.NONE));
                 extension.scoreHighPosition();
-                sleep(1000);
                 wrist.scoreHighPosition();
-                otosDrive.otosDrive((23-17.678), (5+17.678),-45,10);
+                otosDrive.otosDrive(10, 25,-45,10);
                 speciminWheel.releaseSpecimin();
-                sleep(1500);
+                sleep(750);
                 speciminWheel.holdSpecimin();
-                otosDrive.otosDrive(23,5,-45, 10);
-                sleep(7500);
+//                otosDrive.otosDrive(23,5,-45, 10);
+                otosDrive.moveRobot(-1,0,0);
+                sleep(500);
+                otosDrive.moveRobot(0,0,0);
+                extension.startPosition();
+                wrist.moveToMin();
+                shoulder.startPosition();
+                sleep(1000);
                 break;
 
         }
