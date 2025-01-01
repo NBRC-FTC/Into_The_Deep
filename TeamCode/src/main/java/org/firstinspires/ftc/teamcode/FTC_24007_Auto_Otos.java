@@ -17,7 +17,8 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
     public enum START_POSITION{
         NEAR_PARK,
         FAR_PARK,
-        NEAR_SCORE
+        NEAR_SCORE,
+
     }
 
     public static START_POSITION startPosition;
@@ -89,17 +90,17 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
                 extension.setLimit((Extension.LIMIT.NONE));
                 extension.scoreHighPosition();
                 wrist.scoreHighPosition();
-                otosDrive.otosDrive(10, 25,-45,10); //9,26
+                otosDrive.otosDrive(8, 28,-45,10); //9,26
                 speciminWheel.releaseSpecimin();
                 sleep(500);
                 speciminWheel.holdSpecimin();
                 displayPosition(otosDrive);
                 otosDrive.otosDrive(23,5,-45, 10);
-                extension.moveExtensionTo(700);
+                extension.moveExtensionTo(800);
                 shoulder.drivePosition();
                 otosDrive.otosDrive(39.5,4,0, 10);
                 displayPosition(otosDrive);
-                shoulder.moveShoulderTo(375);
+                shoulder.moveShoulderTo(275);
                 speciminWheel.collectSpecimin();
                 otosDrive.otosDrive(39.5,9,0, 3);
                 speciminWheel.holdSpecimin();
@@ -111,20 +112,19 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
                 extension.setLimit((Extension.LIMIT.NONE));
                 extension.scoreHighPosition();
                 wrist.scoreHighPosition();
-                otosDrive.otosDrive(10, 25,-45,10);
+                otosDrive.otosDrive(8, 28,-45,10); //10,25
                 speciminWheel.releaseSpecimin();
                 sleep(750);
                 speciminWheel.holdSpecimin();
-//                otosDrive.otosDrive(23,5,-45, 10);
-                otosDrive.moveRobot(-1,0,0);
-                sleep(500);
-                otosDrive.moveRobot(0,0,0);
+                otosDrive.otosDrive(23,5,-45, 10);
+//                otosDrive.moveRobot(-1,0,0);
+//                sleep(500);
+//                otosDrive.moveRobot(0,0,0);
                 extension.startPosition();
                 wrist.moveToMin();
                 shoulder.startPosition();
-                sleep(1000);
+                otosDrive.otosDrive(39.5,4,0,10);
                 break;
-
         }
         telemetry.addData("Path", "Complete");
         telemetry.update();
@@ -156,6 +156,7 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
                 startPosition = START_POSITION.NEAR_SCORE;
                 break;
             }
+
 
             telemetry.update();
         }
