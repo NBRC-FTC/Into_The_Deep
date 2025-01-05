@@ -11,8 +11,8 @@ public class Extension {
 
     static final int EXTENSION_MAX = 1775;
     static final int EXTENSION_MIN = 0;
-    static final double EXTENSION_POWER = 0.60;
-    static final int EXTENSION_MOVE = 6;
+    static final double EXTENSION_POWER = 0.80;
+    static final int EXTENSION_MOVE = 15;
     static final int EXTENSION_SCORE_LOW = 750;
     static final int EXTENSION_SCORE_HIGH = 1775;
     static final int EXTENSION_PICKUP_POS = 750;

@@ -36,7 +36,7 @@ import org.firstinspires.ftc.vision.opencv.ImageRegion;
 import org.opencv.core.RotatedRect;
 
 import java.util.List;
-
+@Disabled
 /*
  * This OpMode illustrates how to use a video source (camera) to locate specifically colored regions
  *

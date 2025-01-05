@@ -11,8 +11,8 @@ public class Mecanum {
     private DcMotor leftRearMotor = null;
     private DcMotor rightRearMotor = null;
 
-    static final double SLOW_SPEED = 0.1;
-    static final double NORMAL_SPEED = 0.6;
+    static final double SLOW_SPEED = .3;
+    static final double NORMAL_SPEED = .6;
     static final double FAST_SPEED = 1;
     static final double CLICKS_PER_INCH = 87.5;
     static final double CLICKS_PER_DEGRE = 21.94;
