@@ -12,7 +12,10 @@ public class Shoulder {
     static final int     SHOULDER_MAX             = 3850; //old value 6000;
     static final int     SHOULDER_MIN             = 0;
     static final double   SHOULDER_POWER          =0.85;   //was 0.85 before
-    static final int     SHOULDER_MOVE          = 12;
+    static final int     SHOULDER_MOVE_SLOW         = 12;
+    static final int     SHOULDER_MOVE_FAST     = 30;
+    static final int     SHOULDER_MOVE_SLOW_HIGH         = 3250;
+    static final int     SHOULDER_MOVE_SLOW_LOW   = 1400;
     static final int     SHOULDER_DRIVE_POS        = 900;
     static final int     SHOULDER_PICKUP_POS        =550;
     public Shoulder(HardwareMap hardwareMap){
@@ -53,7 +56,14 @@ public class Shoulder {
     public void moveShoulderPosition(float gamepad){
 
         //ShoulderPos = ShoulderDrive.getCurrentPosition() + (int)(-gamepad * SHOULDER_MOVE);
-        ShoulderPos = ShoulderPos + (int)(-gamepad * SHOULDER_MOVE);
+        if (ShoulderPos < SHOULDER_MOVE_SLOW_LOW || ShoulderPos > SHOULDER_MOVE_SLOW_HIGH) {
+            ShoulderPos = ShoulderPos + (int)(-gamepad * SHOULDER_MOVE_SLOW);
+        //else if () {
+            //ShoulderPos = ShoulderPos + (int) (-gamepad * SHOULDER_MOVE_SLOW);
+        } else {
+            ShoulderPos = ShoulderPos + (int)(-gamepad * SHOULDER_MOVE_FAST);
+        }
+
         moveShoulder();
     }
     public void moveShoulderTo(int position) {
