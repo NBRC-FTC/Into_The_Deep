@@ -101,11 +101,12 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
                 shoulder.drivePosition();
                 otosDrive.otosDrive(39.5,4,0, 10);
                 displayPosition(otosDrive);
-                shoulder.moveShoulderTo(325); //!
+                shoulder.moveShoulderTo(300); //!
                 speciminWheel.collectSpecimin();
                 otosDrive.otosDrive(39.5,12,0, 3);//!
                 speciminWheel.holdSpecimin();
                 shoulder.drivePosition();
+                otosDrive.otosDrive(39.5,4,0,10); // delete if go for 1st one first
 //                otosDrive.otosDrive(23,6,0,10);
                 shoulder.scoreHighPosition();
                 otosDrive.otosDrive(23,5,-45, 10);
@@ -118,15 +119,31 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
                 speciminWheel.releaseSpecimin();
                 sleep(500);
                 speciminWheel.holdSpecimin();
-                otosDrive.otosDrive(23,5,-45, 10);
-
-//                otosDrive.moveRobot(-1,0,0);
-//                sleep(500);
-//                otosDrive.moveRobot(0,0,0);
+//                otosDrive.otosDrive(23,5,-45, 10);
+//                extension.startPosition();
+//                wrist.moveToMin();
+//                shoulder.startPosition();
+                //Go for third
+                otosDrive.otosDrive(39.5,8,0,10);
+                sleep(1000);
+                shoulder.moveShoulderPosition(300);
+                extension.moveExtensionTo(800);
+                speciminWheel.collectSpecimin();
+                otosDrive.otosDrive(39.5,17,0,10);
+                sleep(1000);
+                speciminWheel.holdSpecimin();
+                extension.startPosition();
+                shoulder.scoreHighPosition();
+                otosDrive.otosDrive(8,28,-45,10);
+                extension.scoreHighPosition();
+                sleep(1000);
+                speciminWheel.releaseSpecimin();
+                sleep(500);
+                speciminWheel.holdSpecimin();
+                otosDrive.otosDrive(23,5,-45,10);
                 extension.startPosition();
                 wrist.moveToMin();
                 shoulder.startPosition();
-                //otosDrive.otosDrive(39.5,4,0,10);
                 break;
         }
         telemetry.addData("Path", "Complete");
