@@ -101,7 +101,7 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
                 shoulder.drivePosition();
                 otosDrive.otosDrive(39.5,4,0, 10);
                 displayPosition(otosDrive);
-                shoulder.moveShoulderTo(300); //!
+                shoulder.moveShoulderTo(275); //!
                 speciminWheel.collectSpecimin();
                 otosDrive.otosDrive(39.5,12,0, 3);//!
                 speciminWheel.holdSpecimin();
@@ -124,19 +124,19 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
 //                wrist.moveToMin();
 //                shoulder.startPosition();
                 //Go for third
-                otosDrive.otosDrive(39.5,8,0,10);
+                otosDrive.otosDrive(39.5,15,0,10);
+                shoulder.moveShoulderTo(275);
+                extension.moveExtensionTo(650);
                 sleep(1000);
-                shoulder.moveShoulderPosition(300);
-                extension.moveExtensionTo(800);
                 speciminWheel.collectSpecimin();
-                otosDrive.otosDrive(39.5,17,0,10);
+                otosDrive.otosDrive(39.5,22,0,10);
                 sleep(1000);
                 speciminWheel.holdSpecimin();
                 extension.startPosition();
                 shoulder.scoreHighPosition();
-                otosDrive.otosDrive(8,28,-45,10);
-                extension.scoreHighPosition();
                 sleep(1000);
+                extension.scoreHighPosition();
+                otosDrive.otosDrive(8,28,-45,10);
                 speciminWheel.releaseSpecimin();
                 sleep(500);
                 speciminWheel.holdSpecimin();
