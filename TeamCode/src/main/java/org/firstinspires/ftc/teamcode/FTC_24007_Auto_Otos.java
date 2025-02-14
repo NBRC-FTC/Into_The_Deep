@@ -104,6 +104,7 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
                 shoulder.moveShoulderTo(275); //!
                 speciminWheel.collectSpecimin();
                 otosDrive.otosDrive(39.5,12,0, 3);//!
+                displayPosition(otosDrive);
                 speciminWheel.holdSpecimin();
                 shoulder.drivePosition();
                 otosDrive.otosDrive(39.5,4,0,10); // delete if go for 1st one first
@@ -125,11 +126,13 @@ public class FTC_24007_Auto_Otos extends LinearOpMode {
 //                shoulder.startPosition();
                 //Go for third
                 otosDrive.otosDrive(39.5,15,0,10);
+                displayPosition(otosDrive);
                 shoulder.moveShoulderTo(275);
                 extension.moveExtensionTo(650);
                 sleep(1000);
                 speciminWheel.collectSpecimin();
-                otosDrive.otosDrive(39.5,22,0,10);
+                otosDrive.otosDrive(40.5,22,0,10);
+                displayPosition(otosDrive);
                 sleep(1000);
                 speciminWheel.holdSpecimin();
                 extension.startPosition();
